@@ -14,10 +14,17 @@ class ImagesMetaCsv(object):
     CSV_OUTPUT_FILE = 'images_metadata.csv'
 
     @staticmethod
+    def coordinates(entry):
+        return entry['X'] < -106.86 and entry['Y'] > 38.875
+
+    @staticmethod
     def write_output_file(base_path, images_data):
         csv_file = os.path.join(base_path, ImagesMetaCsv.CSV_OUTPUT_FILE)
         print('Writing CSV file to:')
         print('    ' + str(csv_file))
+
+        images_data = filter(ImagesMetaCsv.coordinates, images_data)
+
         with open(csv_file, 'w') as csv_file:
             writer = csv.DictWriter(
                 csv_file,
